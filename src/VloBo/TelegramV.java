@@ -1,6 +1,6 @@
 package VloBo;
 
-
+import org.telegram.bot.kernel.TelegramBot;
 public class TelegramV  {
     private String nameBot;
     private String tokenBot;
