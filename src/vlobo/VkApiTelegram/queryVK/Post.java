@@ -1,4 +1,4 @@
-package vlobo.queryVK;
+package vlobo.VkApiTelegram.queryVK;
 
 import java.io.IOException;
 import java.net.URLEncoder;

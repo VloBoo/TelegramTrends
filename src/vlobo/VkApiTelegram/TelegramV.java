@@ -1,4 +1,5 @@
-package vlobo;
+package vlobo.VkApiTelegram;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.net.URL;
 public class TelegramV {
     protected String token;
     protected final String urlApi = "https://api.telegram.org/";
-    private Class<? extends TelegramVListener> listenerClass;
+    protected TelegramVListener listenerClass;
     private boolean online = true;
 
     public TelegramV(String token) {
@@ -21,13 +22,13 @@ public class TelegramV {
         return CON(this.urlApi + token + method + "?chat_id=" + idChat + "&text=" + text);
     }
 
-    public void listener(Class<? extends TelegramVListener> newClass) {
+    public void listener(TelegramVListener newClass) {
         this.listenerClass=newClass;
         new UpdateListener(this,"UpdateCheakTelegram").start();
+
     }
 
     protected String CON(String url) throws IOException {
-        System.out.println(url);
         URL obj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 

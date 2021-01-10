@@ -1,4 +1,4 @@
-package vlobo;
+package vlobo.VkApiTelegram;
 
 import java.io.BufferedReader;
 import java.io.IOException;

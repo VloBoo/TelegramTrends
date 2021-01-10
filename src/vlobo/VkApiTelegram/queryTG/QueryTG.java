@@ -1,4 +1,4 @@
-package vlobo.queryTG;
+package vlobo.VkApiTelegram.queryTG;
 
 public class QueryTG {
     public boolean ok;
