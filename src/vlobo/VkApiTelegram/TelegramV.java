@@ -19,20 +19,24 @@ public class TelegramV {
 
     public String sendMessage(String idChat, String text) throws IOException {
         String method = "/sendMessage";
-        return CON(this.urlApi + token + method + "?chat_id=" + idChat + "&text=" + text);
+        return connectV(this.urlApi + token + method + "?chat_id=" + idChat + "&text=" + text);
     }
 
     public void listener(TelegramVListener newClass) {
-        this.listenerClass=newClass;
-        new UpdateListener(this,"UpdateCheakTelegram").start();
+        this.listenerClass = newClass;
+        new UpdateListener(this, "UpdateCheakTelegram").start();
 
     }
 
-    protected String CON(String url) throws IOException {
+    protected String connectV(String url) throws IOException {
+        return connectV(url, "GET");
+    }
+
+    protected String connectV(String url, String method) throws IOException {
         URL obj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod(method);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
@@ -43,9 +47,11 @@ public class TelegramV {
         in.close();
         return response.toString();
     }
-    public boolean isOnline(){
+
+    public boolean isOnline() {
         return this.online;
     }
+
     public void stop() {
         this.online = false;
     }

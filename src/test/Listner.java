@@ -15,8 +15,9 @@ public class Listner implements TelegramVListener {
     private TelegramV tg;
     private VkontakteV vk;
     private Gson gson;
-    private String regexUrl="^https:\\/\\/vk\\.com\\/[a-zA-z]{1,100}\\?w=wall-?[0-9]{1,100}_[0-9]{1,100}$";
+    private String regexUrl[] = {"^https:\\/\\/vk\\.com\\/[a-zA-z]{1,100}\\?w=wall-?[0-9]{1,100}_[0-9]{1,100}$", "^https:\\/\\/vk\\.com\\/wall-?[0-9]{1,100}_[0-9]{1,100}$"};
     private Pattern pattern;
+
     public Listner(TelegramV tg, VkontakteV vk) {
         this.vk = vk;
         this.tg = tg;
@@ -26,22 +27,19 @@ public class Listner implements TelegramVListener {
 
     @Override
     public void UpdateQuery(Update update) throws IOException {
-        System.out.println(746564456);
         String mess = update.message.text;
-        String idPost="";
-        System.out.println(mess);
-        boolean as = this.pattern.matches(this.regexUrl,mess);
-        if(this.pattern.matches(this.regexUrl,mess)){
-            for(int i = 0;i < mess.length();i++){
-                idPost = idPost+mess.charAt(i);
-                if(mess.charAt(i)=='='){
-                    idPost="";
-                    i+=4;
+        String idPost = "";
+        System.out.println("[VVT][Update text]{" + update.message.chat.username + "," + update.message.chat.id + "}:" + mess);
+        boolean as = this.pattern.matches(this.regexUrl[0], mess) ^ this.pattern.matches(this.regexUrl[1], mess);
+        if (as) {
+            for (int i = 5; i < mess.length(); i++) {
+                idPost = idPost + mess.charAt(i);
+                if (mess.charAt(i - 3) == 'w' & mess.charAt(i - 2) == 'a' & mess.charAt(i - 1) == 'l' & mess.charAt(i) == 'l') {
+                    idPost = "";
                 }
             }
-            System.out.println(746564456);
             Answer ans = this.gson.fromJson(this.vk.getPost(idPost), Answer.class);
-            System.out.println(tg.sendMessage(String.valueOf(update.message.chat.id), ans.response[0].getEncoderText()));
+            System.out.println("[VVT][Send OK]:" + tg.sendMessage(String.valueOf(update.message.chat.id), ans.response[0].getEncoderText()));
         }
     }
 }
